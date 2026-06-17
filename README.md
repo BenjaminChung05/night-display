@@ -4,9 +4,12 @@ A calm fullscreen night clock for Discord calls, late-night study sessions, and 
 
 Night Display shows a large glowing clock over a cozy blue lofi-style room scene, with an away message, friend time zones, dimming controls, and generated ambient sleep sounds. It is designed to be readable in the dark without feeling harsh on the eyes.
 
+The big clock uses the visitor's browser/device timezone. The small friend clocks are separate and can be customized without changing the main local clock.
+
 ## Features
 
 - Large elegant clock with optional seconds
+- Local region and GMT offset under the main clock
 - Cozy animated blue night-room background
 - Away status message for friends on call
 - Customizable friend clocks with add/remove timezone slots

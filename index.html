@@ -780,9 +780,20 @@
       vertical-align: 0.48em;
     }
 
+    .local-zone {
+      min-height: 1.2rem;
+      margin-top: clamp(0.65rem, 1.5vw, 1.1rem);
+      color: rgba(212, 238, 255, 0.72);
+      font-size: clamp(0.72rem, 1.4vw, 0.92rem);
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-shadow: 0 0 0.8rem rgba(var(--glow-b), 0.14);
+    }
+
     .date {
       min-height: 1.65rem;
-      margin-top: clamp(1rem, 2vw, 1.65rem);
+      margin-top: clamp(0.55rem, 1.4vw, 1rem);
       color: var(--muted);
       font-size: clamp(1rem, 2.2vw, 1.35rem);
       letter-spacing: 0.16em;
@@ -1312,6 +1323,7 @@
 
     <section class="clock-stage" id="clockStage" aria-label="Night clock">
       <div class="time" id="time" aria-live="polite"></div>
+      <div class="local-zone" id="localZone"></div>
       <div class="date" id="date"></div>
       <div class="away" id="away">
         <span class="sleep-dot" aria-hidden="true"></span>
@@ -1475,6 +1487,7 @@
       mediaBackground: document.getElementById("mediaBackground"),
       libraryScene: document.getElementById("libraryScene"),
       time: document.getElementById("time"),
+      localZone: document.getElementById("localZone"),
       date: document.getElementById("date"),
       away: document.getElementById("away"),
       awayText: document.getElementById("awayText"),
@@ -1759,6 +1772,41 @@
       applySettings();
     }
 
+    function getLocalTimeZone() {
+      return Intl.DateTimeFormat().resolvedOptions().timeZone || "Local time";
+    }
+
+    function formatRegionName(zone) {
+      const option = getTimezoneOption(zone);
+
+      if (option) {
+        return option.label;
+      }
+
+      return zone
+        .split("/")
+        .slice(-2)
+        .join(" · ")
+        .replace(/_/g, " ");
+    }
+
+    function formatGMTOffset(date) {
+      const totalMinutes = -date.getTimezoneOffset();
+      const sign = totalMinutes >= 0 ? "+" : "-";
+      const absoluteMinutes = Math.abs(totalMinutes);
+      const hours = Math.floor(absoluteMinutes / 60);
+      const minutes = absoluteMinutes % 60;
+
+      return minutes
+        ? `GMT${sign}${hours}:${String(minutes).padStart(2, "0")}`
+        : `GMT${sign}${hours}`;
+    }
+
+    function renderLocalZone(now = new Date()) {
+      const localZone = getLocalTimeZone();
+      elements.localZone.textContent = `Local time · ${formatRegionName(localZone)} · ${formatGMTOffset(now)}`;
+    }
+
     function revokeBackgroundUrl() {
       if (!backgroundUrl) {
         return;
@@ -1991,6 +2039,7 @@
         day: "numeric"
       });
 
+      renderLocalZone(now);
       renderWorldClocks(now);
     }
 
