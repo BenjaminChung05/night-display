@@ -13,8 +13,9 @@ The big clock uses the visitor's browser/device timezone. The small friend clock
 - Cozy animated blue night-room background
 - Away status message for friends on call
 - Customizable friend clocks with add/remove timezone slots
+- Rotating weather forecast for the selected clock cities
 - Brightness dimmer for dark rooms
-- Fullscreen mode
+- Screen share fullscreen mode
 - Theme swatches
 - Built-in still and live background library
 - Custom photo, GIF, or video background
@@ -31,11 +32,15 @@ For Discord, share the browser window, click the fullscreen button, choose a sou
 
 Browsers require a click before audio can start, so press the play button once after opening the page.
 
+Use the fullscreen button before sharing to hide browser bezels and app controls as much as the browser allows. Browser security requires this to happen from a click, so the page cannot force fullscreen automatically on load.
+
 Use the `bg` button to choose a local image, GIF, or video background. The file is stored in that browser only and can be removed with `reset`.
 
 Use the background dropdown to choose from the built-in library: the original lofi room, still scenes, and live animated scenes. If you upload your own background, it appears as `My upload` in that same library.
 
 Use the timezone row to choose which country or city clocks appear. The `+` button adds another clock, and each `-` button removes one.
+
+The weather card rotates through those selected clock cities. Weather is loaded in the browser from Open-Meteo, so it needs an internet connection.
 
 ## Running Locally
 
@@ -55,7 +60,7 @@ http://localhost:4173
 
 This is a static site, so pushing `index.html` to GitHub makes the source available, but visitors need a hosted URL to use it easily. Netlify can publish straight from the GitHub repo; after you push changes, trigger a new deploy or let Netlify auto-deploy from the connected branch.
 
-The status message, toggles, chosen timezones, chosen library background, and custom background stay in each visitor's own browser storage. The app does not send those choices to GitHub, Netlify, or a shared server.
+The status message, toggles, chosen timezones, chosen library background, and custom background stay in each visitor's own browser storage. Weather requests go directly from the visitor's browser to Open-Meteo for the selected city coordinates; the app does not send those choices to GitHub, Netlify, or a shared app server.
 
 ## Customizing
 

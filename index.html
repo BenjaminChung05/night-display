@@ -836,6 +836,80 @@
       margin: clamp(1rem, 2.5vw, 1.8rem) auto 0;
     }
 
+    .weather-rotator {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: clamp(0.65rem, 1.6vw, 1rem);
+      width: min(78vw, 42rem);
+      min-height: 4.2rem;
+      margin: clamp(0.65rem, 1.6vw, 1rem) auto 0;
+      padding: 0.72rem 0.95rem;
+      border: 1px solid rgba(191, 230, 255, 0.13);
+      border-radius: 8px;
+      background: rgba(2, 10, 25, 0.28);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 1rem 3rem rgba(0, 0, 0, 0.12);
+      backdrop-filter: blur(12px);
+    }
+
+    .weather-rotator[hidden] {
+      display: none;
+    }
+
+    .weather-icon {
+      min-width: 2.5rem;
+      color: rgba(232, 248, 255, 0.92);
+      font-size: clamp(1.75rem, 4vw, 2.35rem);
+      line-height: 1;
+      text-shadow: 0 0 1rem rgba(var(--glow-b), 0.22);
+    }
+
+    .weather-copy {
+      min-width: 0;
+      text-align: left;
+    }
+
+    .weather-place {
+      overflow: hidden;
+      color: var(--muted);
+      font-size: clamp(0.66rem, 1.1vw, 0.76rem);
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .weather-summary {
+      margin-top: 0.2rem;
+      overflow: hidden;
+      color: rgba(235, 249, 255, 0.92);
+      font-size: clamp(1rem, 2.2vw, 1.28rem);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .weather-detail {
+      margin-top: 0.16rem;
+      overflow: hidden;
+      color: var(--quiet);
+      font-size: clamp(0.62rem, 1vw, 0.72rem);
+      letter-spacing: 0.08em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .weather-index {
+      color: var(--quiet);
+      font-size: 0.7rem;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
     .zone-clock {
       min-width: 0;
       padding: 0.74rem 0.82rem;
@@ -900,6 +974,18 @@
       opacity: 0;
       transform: translateY(0.9rem);
       pointer-events: none;
+    }
+
+    .share-mode .controls {
+      opacity: 0;
+      transform: translateY(0.9rem);
+      pointer-events: none;
+    }
+
+    .share-mode:not(.is-idle) .controls {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .is-idle {
@@ -1257,6 +1343,15 @@
         width: min(92vw, 24rem);
       }
 
+      .weather-rotator {
+        grid-template-columns: auto minmax(0, 1fr);
+        width: min(92vw, 24rem);
+      }
+
+      .weather-index {
+        display: none;
+      }
+
       .zone-clock {
         padding: 0.55rem 0.34rem;
       }
@@ -1330,6 +1425,15 @@
         <span id="awayText">away · asleep probably</span>
       </div>
       <div class="world-clocks" id="worldClocks" aria-label="Friend time zones"></div>
+      <article class="weather-rotator" id="weatherRotator" aria-live="polite">
+        <div class="weather-icon" id="weatherIcon" aria-hidden="true">--</div>
+        <div class="weather-copy">
+          <div class="weather-place" id="weatherPlace">Weather</div>
+          <div class="weather-summary" id="weatherSummary">Forecast loading</div>
+          <div class="weather-detail" id="weatherDetail">Selected clocks rotate here</div>
+        </div>
+        <div class="weather-index" id="weatherIndex">1/1</div>
+      </article>
     </section>
 
     <section class="controls" id="controls" aria-label="Night display controls">
@@ -1381,34 +1485,34 @@
     ];
 
     const timezoneLibrary = [
-      { label: "Australia · Sydney", clockLabel: "Sydney", zone: "Australia/Sydney" },
-      { label: "Australia · Perth", clockLabel: "Perth", zone: "Australia/Perth" },
-      { label: "Malaysia · Kuala Lumpur", clockLabel: "Malaysia", zone: "Asia/Kuala_Lumpur" },
-      { label: "Singapore", clockLabel: "Singapore", zone: "Asia/Singapore" },
-      { label: "Indonesia · Jakarta", clockLabel: "Jakarta", zone: "Asia/Jakarta" },
-      { label: "Philippines · Manila", clockLabel: "Manila", zone: "Asia/Manila" },
-      { label: "Thailand · Bangkok", clockLabel: "Bangkok", zone: "Asia/Bangkok" },
-      { label: "Japan · Tokyo", clockLabel: "Tokyo", zone: "Asia/Tokyo" },
-      { label: "South Korea · Seoul", clockLabel: "Seoul", zone: "Asia/Seoul" },
-      { label: "China · Shanghai", clockLabel: "Shanghai", zone: "Asia/Shanghai" },
-      { label: "India · Mumbai", clockLabel: "Mumbai", zone: "Asia/Kolkata" },
-      { label: "UAE · Dubai", clockLabel: "Dubai", zone: "Asia/Dubai" },
-      { label: "Saudi Arabia · Riyadh", clockLabel: "Riyadh", zone: "Asia/Riyadh" },
-      { label: "United Kingdom · London", clockLabel: "London", zone: "Europe/London" },
-      { label: "France · Paris", clockLabel: "Paris", zone: "Europe/Paris" },
-      { label: "Germany · Berlin", clockLabel: "Berlin", zone: "Europe/Berlin" },
-      { label: "Netherlands · Amsterdam", clockLabel: "Amsterdam", zone: "Europe/Amsterdam" },
-      { label: "South Africa · Johannesburg", clockLabel: "Johannesburg", zone: "Africa/Johannesburg" },
-      { label: "United States · New York", clockLabel: "New York", zone: "America/New_York" },
-      { label: "United States · Chicago", clockLabel: "Chicago", zone: "America/Chicago" },
-      { label: "United States · Los Angeles", clockLabel: "Los Angeles", zone: "America/Los_Angeles" },
-      { label: "Canada · Toronto", clockLabel: "Toronto", zone: "America/Toronto" },
-      { label: "Canada · Vancouver", clockLabel: "Vancouver", zone: "America/Vancouver" },
-      { label: "Mexico · Mexico City", clockLabel: "Mexico City", zone: "America/Mexico_City" },
-      { label: "Brazil · Sao Paulo", clockLabel: "Sao Paulo", zone: "America/Sao_Paulo" },
-      { label: "New Zealand · Auckland", clockLabel: "Auckland", zone: "Pacific/Auckland" },
-      { label: "Hawaii · Honolulu", clockLabel: "Honolulu", zone: "Pacific/Honolulu" },
-      { label: "UTC", clockLabel: "UTC", zone: "UTC" }
+      { label: "Australia · Sydney", clockLabel: "Sydney", zone: "Australia/Sydney", latitude: -33.8688, longitude: 151.2093 },
+      { label: "Australia · Perth", clockLabel: "Perth", zone: "Australia/Perth", latitude: -31.9523, longitude: 115.8613 },
+      { label: "Malaysia · Kuala Lumpur", clockLabel: "Malaysia", zone: "Asia/Kuala_Lumpur", latitude: 3.139, longitude: 101.6869 },
+      { label: "Singapore", clockLabel: "Singapore", zone: "Asia/Singapore", latitude: 1.3521, longitude: 103.8198 },
+      { label: "Indonesia · Jakarta", clockLabel: "Jakarta", zone: "Asia/Jakarta", latitude: -6.2088, longitude: 106.8456 },
+      { label: "Philippines · Manila", clockLabel: "Manila", zone: "Asia/Manila", latitude: 14.5995, longitude: 120.9842 },
+      { label: "Thailand · Bangkok", clockLabel: "Bangkok", zone: "Asia/Bangkok", latitude: 13.7563, longitude: 100.5018 },
+      { label: "Japan · Tokyo", clockLabel: "Tokyo", zone: "Asia/Tokyo", latitude: 35.6762, longitude: 139.6503 },
+      { label: "South Korea · Seoul", clockLabel: "Seoul", zone: "Asia/Seoul", latitude: 37.5665, longitude: 126.978 },
+      { label: "China · Shanghai", clockLabel: "Shanghai", zone: "Asia/Shanghai", latitude: 31.2304, longitude: 121.4737 },
+      { label: "India · Mumbai", clockLabel: "Mumbai", zone: "Asia/Kolkata", latitude: 19.076, longitude: 72.8777 },
+      { label: "UAE · Dubai", clockLabel: "Dubai", zone: "Asia/Dubai", latitude: 25.2048, longitude: 55.2708 },
+      { label: "Saudi Arabia · Riyadh", clockLabel: "Riyadh", zone: "Asia/Riyadh", latitude: 24.7136, longitude: 46.6753 },
+      { label: "United Kingdom · London", clockLabel: "London", zone: "Europe/London", latitude: 51.5072, longitude: -0.1276 },
+      { label: "France · Paris", clockLabel: "Paris", zone: "Europe/Paris", latitude: 48.8566, longitude: 2.3522 },
+      { label: "Germany · Berlin", clockLabel: "Berlin", zone: "Europe/Berlin", latitude: 52.52, longitude: 13.405 },
+      { label: "Netherlands · Amsterdam", clockLabel: "Amsterdam", zone: "Europe/Amsterdam", latitude: 52.3676, longitude: 4.9041 },
+      { label: "South Africa · Johannesburg", clockLabel: "Johannesburg", zone: "Africa/Johannesburg", latitude: -26.2041, longitude: 28.0473 },
+      { label: "United States · New York", clockLabel: "New York", zone: "America/New_York", latitude: 40.7128, longitude: -74.006 },
+      { label: "United States · Chicago", clockLabel: "Chicago", zone: "America/Chicago", latitude: 41.8781, longitude: -87.6298 },
+      { label: "United States · Los Angeles", clockLabel: "Los Angeles", zone: "America/Los_Angeles", latitude: 34.0522, longitude: -118.2437 },
+      { label: "Canada · Toronto", clockLabel: "Toronto", zone: "America/Toronto", latitude: 43.6532, longitude: -79.3832 },
+      { label: "Canada · Vancouver", clockLabel: "Vancouver", zone: "America/Vancouver", latitude: 49.2827, longitude: -123.1207 },
+      { label: "Mexico · Mexico City", clockLabel: "Mexico City", zone: "America/Mexico_City", latitude: 19.4326, longitude: -99.1332 },
+      { label: "Brazil · Sao Paulo", clockLabel: "Sao Paulo", zone: "America/Sao_Paulo", latitude: -23.5558, longitude: -46.6396 },
+      { label: "New Zealand · Auckland", clockLabel: "Auckland", zone: "Pacific/Auckland", latitude: -36.8509, longitude: 174.7645 },
+      { label: "Hawaii · Honolulu", clockLabel: "Honolulu", zone: "Pacific/Honolulu", latitude: 21.3099, longitude: -157.8581 },
+      { label: "UTC · Greenwich", clockLabel: "UTC", zone: "UTC", latitude: 51.4779, longitude: -0.0015 }
     ];
 
     const defaults = {
@@ -1492,6 +1596,12 @@
       away: document.getElementById("away"),
       awayText: document.getElementById("awayText"),
       worldClocks: document.getElementById("worldClocks"),
+      weatherRotator: document.getElementById("weatherRotator"),
+      weatherIcon: document.getElementById("weatherIcon"),
+      weatherPlace: document.getElementById("weatherPlace"),
+      weatherSummary: document.getElementById("weatherSummary"),
+      weatherDetail: document.getElementById("weatherDetail"),
+      weatherIndex: document.getElementById("weatherIndex"),
       controls: document.getElementById("controls"),
       zoneControls: document.getElementById("zoneControls"),
       zonePickerList: document.getElementById("zonePickerList"),
@@ -1523,6 +1633,8 @@
     let idleTimer = 0;
     let audio = null;
     let backgroundUrl = "";
+    let weatherRotationIndex = 0;
+    const weatherCache = new Map();
 
     function loadSettings() {
       try {
@@ -1668,6 +1780,7 @@
       elements.date.hidden = !state.showDate;
       elements.away.hidden = !state.showAway;
       elements.worldClocks.hidden = !state.showWorld;
+      elements.weatherRotator.hidden = !state.showWorld;
       elements.zoneControls.hidden = !state.showWorld;
       elements.awayText.textContent = state.message || defaults.message;
       elements.messageInput.value = state.message;
@@ -1682,6 +1795,7 @@
 
       renderTime();
       renderWorldClocks();
+      renderWeatherCard();
     }
 
     function makeTimezoneOption(option, selectedZone) {
@@ -1744,6 +1858,7 @@
       saveSettings();
       renderZoneControls();
       renderWorldClocks();
+      refreshWeather({ force: true });
     }
 
     function addWorldClock() {
@@ -1760,6 +1875,7 @@
       });
       saveSettings();
       applySettings();
+      refreshWeather({ force: true });
     }
 
     function removeWorldClock(index) {
@@ -1768,8 +1884,186 @@
       }
 
       state.worldClocks.splice(index, 1);
+      weatherRotationIndex = Math.min(weatherRotationIndex, state.worldClocks.length - 1);
       saveSettings();
       applySettings();
+      refreshWeather({ force: true });
+    }
+
+    function getWeatherMeta(code) {
+      const weatherCodes = {
+        0: { icon: "Clear", label: "Clear sky" },
+        1: { icon: "Fair", label: "Mainly clear" },
+        2: { icon: "Partly", label: "Partly cloudy" },
+        3: { icon: "Cloudy", label: "Overcast" },
+        45: { icon: "Fog", label: "Fog" },
+        48: { icon: "Fog", label: "Rime fog" },
+        51: { icon: "Drizzle", label: "Light drizzle" },
+        53: { icon: "Drizzle", label: "Drizzle" },
+        55: { icon: "Drizzle", label: "Dense drizzle" },
+        61: { icon: "Rain", label: "Light rain" },
+        63: { icon: "Rain", label: "Rain" },
+        65: { icon: "Rain", label: "Heavy rain" },
+        71: { icon: "Snow", label: "Light snow" },
+        73: { icon: "Snow", label: "Snow" },
+        75: { icon: "Snow", label: "Heavy snow" },
+        80: { icon: "Showers", label: "Light showers" },
+        81: { icon: "Showers", label: "Showers" },
+        82: { icon: "Showers", label: "Heavy showers" },
+        95: { icon: "Storm", label: "Thunderstorm" },
+        96: { icon: "Storm", label: "Storm with hail" },
+        99: { icon: "Storm", label: "Heavy storm with hail" }
+      };
+
+      return weatherCodes[code] || { icon: "Weather", label: "Forecast" };
+    }
+
+    function formatTemperature(value) {
+      return Number.isFinite(value) ? `${Math.round(value)}°C` : "--";
+    }
+
+    function getWeatherOption(clock) {
+      return getTimezoneOption(clock.zone);
+    }
+
+    function getWeatherUrl(option) {
+      const params = new URLSearchParams({
+        latitude: String(option.latitude),
+        longitude: String(option.longitude),
+        current: "temperature_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation",
+        daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code",
+        forecast_days: "3",
+        timezone: option.zone
+      });
+
+      return `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
+    }
+
+    function parseWeather(option, payload) {
+      const current = payload.current || {};
+      const daily = payload.daily || {};
+      const code = Number(current.weather_code ?? daily.weather_code?.[0] ?? 0);
+      const meta = getWeatherMeta(code);
+
+      return {
+        label: option.clockLabel,
+        zone: option.zone,
+        icon: meta.icon,
+        condition: meta.label,
+        temperature: current.temperature_2m,
+        apparent: current.apparent_temperature,
+        high: daily.temperature_2m_max?.[0],
+        low: daily.temperature_2m_min?.[0],
+        precipitationChance: daily.precipitation_probability_max?.[0],
+        wind: current.wind_speed_10m,
+        precipitation: current.precipitation,
+        fetchedAt: Date.now()
+      };
+    }
+
+    async function fetchWeather(option, { force = false } = {}) {
+      const cached = weatherCache.get(option.zone);
+      const isFresh = cached && cached.status === "ready" && Date.now() - cached.data.fetchedAt < 30 * 60 * 1000;
+
+      if (!force && isFresh) {
+        return cached.data;
+      }
+
+      weatherCache.set(option.zone, {
+        status: "loading",
+        data: cached?.data || null
+      });
+      renderWeatherCard();
+
+      try {
+        const response = await fetch(getWeatherUrl(option));
+
+        if (!response.ok) {
+          throw new Error(`Weather request failed: ${response.status}`);
+        }
+
+        const data = parseWeather(option, await response.json());
+        weatherCache.set(option.zone, {
+          status: "ready",
+          data
+        });
+        return data;
+      } catch (error) {
+        weatherCache.set(option.zone, {
+          status: "error",
+          data: cached?.data || null
+        });
+        console.warn("Could not load weather forecast.", error);
+        return null;
+      } finally {
+        renderWeatherCard();
+      }
+    }
+
+    function getActiveWeatherClock() {
+      state.worldClocks = normalizeWorldClocks(state.worldClocks);
+      weatherRotationIndex %= state.worldClocks.length;
+      return state.worldClocks[weatherRotationIndex];
+    }
+
+    function renderWeatherCard() {
+      if (!state.showWorld) {
+        elements.weatherRotator.hidden = true;
+        return;
+      }
+
+      const clock = getActiveWeatherClock();
+      const option = getWeatherOption(clock);
+      const cached = option ? weatherCache.get(option.zone) : null;
+      const weather = cached?.data;
+
+      elements.weatherRotator.hidden = false;
+      elements.weatherPlace.textContent = `${clock.label} weather`;
+      elements.weatherIndex.textContent = `${weatherRotationIndex + 1}/${state.worldClocks.length}`;
+
+      if (weather) {
+        const precipitationText = Number.isFinite(weather.precipitationChance)
+          ? `rain ${weather.precipitationChance}%`
+          : "rain --";
+
+        elements.weatherIcon.textContent = weather.icon;
+        elements.weatherSummary.textContent = `${formatTemperature(weather.temperature)} · ${weather.condition}`;
+        elements.weatherDetail.textContent = `Feels ${formatTemperature(weather.apparent)} · H ${formatTemperature(weather.high)} / L ${formatTemperature(weather.low)} · ${precipitationText}`;
+        return;
+      }
+
+      elements.weatherIcon.textContent = cached?.status === "error" ? "Offline" : "--";
+      elements.weatherSummary.textContent = cached?.status === "error" ? "Forecast unavailable" : "Forecast loading";
+      elements.weatherDetail.textContent = cached?.status === "error"
+        ? "Weather loads online from Open-Meteo"
+        : "Current weather and today forecast";
+    }
+
+    async function refreshWeather({ force = false } = {}) {
+      if (!state.showWorld) {
+        return;
+      }
+
+      const options = normalizeWorldClocks(state.worldClocks)
+        .map(getWeatherOption)
+        .filter(Boolean);
+
+      renderWeatherCard();
+      await Promise.all(options.map((option) => fetchWeather(option, { force })));
+    }
+
+    function rotateWeather() {
+      if (!state.showWorld || !state.worldClocks.length) {
+        return;
+      }
+
+      weatherRotationIndex = (weatherRotationIndex + 1) % state.worldClocks.length;
+      renderWeatherCard();
+      const option = getWeatherOption(getActiveWeatherClock());
+
+      if (option) {
+        fetchWeather(option);
+      }
     }
 
     function getLocalTimeZone() {
@@ -2165,7 +2459,33 @@
         }
 
         elements.app.classList.add("is-idle");
-      }, 3400);
+      }, document.fullscreenElement ? 1200 : 3400);
+    }
+
+    function updateFullscreenButton() {
+      const isFullscreen = Boolean(document.fullscreenElement);
+
+      elements.app.classList.toggle("share-mode", isFullscreen);
+      elements.fullscreenButton.setAttribute("aria-pressed", String(isFullscreen));
+      elements.fullscreenButton.title = isFullscreen
+        ? "Exit screen share fullscreen"
+        : "Screen share fullscreen";
+      elements.fullscreenButton.setAttribute("aria-label", elements.fullscreenButton.title);
+    }
+
+    async function toggleShareFullscreen() {
+      try {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+        } else {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (error) {
+        console.warn("Fullscreen is not available in this browser context.", error);
+      } finally {
+        updateFullscreenButton();
+        showControls();
+      }
     }
 
     function setTheme(theme) {
@@ -2397,13 +2717,8 @@
       button.addEventListener("click", () => setTheme(button.dataset.theme));
     });
 
-    elements.fullscreenButton.addEventListener("click", async () => {
-      if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      } else {
-        await document.documentElement.requestFullscreen();
-      }
-    });
+    elements.fullscreenButton.addEventListener("click", toggleShareFullscreen);
+    document.addEventListener("fullscreenchange", updateFullscreenButton);
 
     elements.brightness.addEventListener("input", (event) => {
       state.brightness = Number(event.target.value);
@@ -2439,6 +2754,10 @@
       state.showWorld = !state.showWorld;
       saveSettings();
       applySettings();
+
+      if (state.showWorld) {
+        refreshWeather();
+      }
     });
 
     elements.zonePickerList.addEventListener("change", (event) => {
@@ -2521,11 +2840,15 @@
     resizeCanvas();
     applySettings();
     restoreStoredBackground();
+    refreshWeather();
     drawNight();
     renderTime();
+    updateFullscreenButton();
     showControls();
 
     setInterval(renderTime, 500);
+    setInterval(rotateWeather, 10000);
+    setInterval(refreshWeather, 30 * 60 * 1000);
     setInterval(updateDrift, 180000);
     window.setTimeout(updateDrift, 3000);
   </script>
