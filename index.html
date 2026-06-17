@@ -45,6 +45,19 @@
       font: inherit;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
+    .file-input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .app {
       position: relative;
       display: grid;
@@ -53,6 +66,323 @@
       isolation: isolate;
       filter: brightness(var(--brightness));
       transition: filter 240ms ease;
+    }
+
+    .media-background {
+      position: fixed;
+      inset: 0;
+      z-index: -5;
+      overflow: hidden;
+      background: #000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 360ms ease;
+    }
+
+    .app.has-custom-background .media-background {
+      opacity: 1;
+    }
+
+    .media-background img,
+    .media-background video {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(0.92) contrast(0.9) brightness(0.86);
+    }
+
+    .app.has-custom-background .sky {
+      opacity: 0.34;
+    }
+
+    .app.has-custom-background .aurora {
+      opacity: 0.26;
+    }
+
+    .app.has-custom-background .room-scene {
+      opacity: 0.18;
+    }
+
+    .app.has-custom-background canvas {
+      opacity: 0.42;
+    }
+
+    .app.has-custom-background .vignette {
+      background:
+        radial-gradient(circle at center, transparent 22%, rgba(0, 3, 12, 0.24) 62%, rgba(0, 0, 0, 0.72) 100%),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.42));
+    }
+
+    .library-scene {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 360ms ease;
+    }
+
+    .app.background-lake .library-scene,
+    .app.background-paper .library-scene,
+    .app.background-aurora-live .library-scene,
+    .app.background-rain-live .library-scene,
+    .app.background-comets-live .library-scene {
+      opacity: 0.88;
+    }
+
+    .app.background-lake .room-scene,
+    .app.background-paper .room-scene,
+    .app.background-aurora-live .room-scene,
+    .app.background-rain-live .room-scene,
+    .app.background-comets-live .room-scene {
+      opacity: 0;
+    }
+
+    .app.background-lake .sky {
+      background:
+        radial-gradient(circle at 62% 24%, rgba(255, 241, 210, 0.16), transparent 11rem),
+        linear-gradient(180deg, #08142b 0%, #163252 48%, #07131f 100%);
+    }
+
+    .app.background-paper .sky {
+      background:
+        radial-gradient(circle at 26% 18%, rgba(255, 216, 143, 0.12), transparent 13rem),
+        linear-gradient(160deg, #130e23 0%, #1b2743 48%, #071623 100%);
+    }
+
+    .app.background-aurora-live .sky {
+      background:
+        radial-gradient(circle at 50% 30%, rgba(116, 255, 222, 0.16), transparent 24rem),
+        linear-gradient(145deg, #021016 0%, #07324b 48%, #151747 100%);
+    }
+
+    .app.background-rain-live .sky {
+      background:
+        radial-gradient(circle at 74% 25%, rgba(255, 179, 111, 0.12), transparent 16rem),
+        linear-gradient(160deg, #050711 0%, #13233d 48%, #081624 100%);
+    }
+
+    .app.background-comets-live .sky {
+      background:
+        radial-gradient(circle at 42% 42%, rgba(230, 133, 255, 0.12), transparent 20rem),
+        linear-gradient(145deg, #050414 0%, #15163c 48%, #031a2c 100%);
+    }
+
+    .library-scene span {
+      position: absolute;
+      display: block;
+    }
+
+    .lake-moon {
+      top: 12vh;
+      left: 62vw;
+      width: clamp(4rem, 9vw, 7.2rem);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgba(255, 238, 204, 0.86);
+      box-shadow:
+        0 0 2.2rem rgba(255, 225, 174, 0.3),
+        0 0 8rem rgba(113, 192, 255, 0.2);
+    }
+
+    .lake-ridge {
+      right: -4vw;
+      left: -4vw;
+      bottom: 35vh;
+      height: 17vh;
+      background: linear-gradient(135deg, rgba(13, 39, 59, 0.96), rgba(6, 16, 31, 0.98));
+      clip-path: polygon(0 70%, 12% 34%, 24% 60%, 36% 22%, 49% 62%, 62% 30%, 74% 58%, 88% 24%, 100% 66%, 100% 100%, 0 100%);
+    }
+
+    .lake-ridge.back {
+      bottom: 42vh;
+      opacity: 0.44;
+      transform: scaleY(0.72);
+    }
+
+    .lake-water {
+      right: -6vw;
+      bottom: 0;
+      left: -6vw;
+      height: 42vh;
+      background:
+        linear-gradient(90deg, transparent 0 14%, rgba(255, 230, 190, 0.18) 48% 54%, transparent 86%),
+        repeating-linear-gradient(180deg, rgba(190, 230, 255, 0.12) 0 1px, transparent 1px 1.1rem),
+        linear-gradient(180deg, rgba(18, 60, 85, 0.7), rgba(2, 9, 19, 0.96));
+    }
+
+    .lake-shore {
+      right: -4vw;
+      bottom: 5vh;
+      left: -4vw;
+      height: 12vh;
+      border-radius: 50% 50% 0 0;
+      background: rgba(2, 7, 16, 0.78);
+    }
+
+    .paper-star {
+      width: clamp(3.4rem, 7vw, 5.8rem);
+      aspect-ratio: 1;
+      background:
+        linear-gradient(45deg, transparent 39%, rgba(255, 224, 151, 0.82) 40% 60%, transparent 61%),
+        linear-gradient(-45deg, transparent 39%, rgba(255, 224, 151, 0.82) 40% 60%, transparent 61%);
+      filter: drop-shadow(0 0 1.5rem rgba(255, 204, 132, 0.28));
+      opacity: 0.62;
+    }
+
+    .paper-star.one {
+      top: 14vh;
+      left: 13vw;
+      transform: rotate(8deg);
+    }
+
+    .paper-star.two {
+      top: 19vh;
+      right: 17vw;
+      width: clamp(2.8rem, 5vw, 4.6rem);
+      opacity: 0.46;
+      transform: rotate(-18deg);
+    }
+
+    .paper-star.three {
+      right: 30vw;
+      bottom: 27vh;
+      width: clamp(2.5rem, 4vw, 3.8rem);
+      opacity: 0.38;
+      transform: rotate(32deg);
+    }
+
+    .paper-hills {
+      right: -4vw;
+      bottom: 0;
+      left: -4vw;
+      height: 44vh;
+      background:
+        radial-gradient(ellipse at 22% 84%, rgba(39, 113, 111, 0.54), transparent 31%),
+        radial-gradient(ellipse at 72% 88%, rgba(93, 76, 132, 0.56), transparent 34%),
+        linear-gradient(180deg, transparent 0 35%, rgba(4, 11, 22, 0.94) 92%);
+    }
+
+    .paper-horizon {
+      right: -8vw;
+      bottom: 22vh;
+      left: -8vw;
+      height: 16vh;
+      background: rgba(6, 21, 34, 0.74);
+      clip-path: polygon(0 72%, 15% 42%, 26% 64%, 41% 36%, 54% 70%, 70% 39%, 84% 62%, 100% 40%, 100% 100%, 0 100%);
+    }
+
+    .aurora-band {
+      inset: 0;
+      margin: auto;
+      width: 130vw;
+      height: 42vh;
+      border-radius: 50%;
+      filter: blur(24px);
+      mix-blend-mode: screen;
+      opacity: 0.5;
+      transform-origin: 50% 50%;
+    }
+
+    .aurora-band.one {
+      top: 2vh;
+      left: -16vw;
+      background: conic-gradient(from 140deg at 50% 50%, transparent, rgba(109, 255, 220, 0.54), rgba(92, 149, 255, 0.32), transparent 62%);
+      animation: aurora-sway 16s ease-in-out infinite alternate;
+    }
+
+    .aurora-band.two {
+      top: 14vh;
+      right: -24vw;
+      background: conic-gradient(from 210deg at 45% 60%, transparent, rgba(255, 157, 225, 0.32), rgba(100, 223, 255, 0.46), transparent 70%);
+      animation: aurora-sway 22s ease-in-out infinite alternate-reverse;
+    }
+
+    .aurora-ground {
+      right: -5vw;
+      bottom: 0;
+      left: -5vw;
+      height: 32vh;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(77, 196, 168, 0.18), transparent 38%),
+        linear-gradient(180deg, transparent, rgba(1, 7, 15, 0.92));
+    }
+
+    .rain-window {
+      top: 8vh;
+      right: 9vw;
+      bottom: 10vh;
+      left: 9vw;
+      border: 1px solid rgba(188, 229, 255, 0.12);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(188, 229, 255, 0.1) 50%, transparent calc(50% + 1px)),
+        linear-gradient(180deg, transparent calc(54% - 1px), rgba(188, 229, 255, 0.08) 54%, transparent calc(54% + 1px)),
+        linear-gradient(180deg, rgba(16, 35, 62, 0.48), rgba(2, 7, 18, 0.42));
+      box-shadow: inset 0 0 4rem rgba(97, 176, 255, 0.07);
+    }
+
+    .rain-drops {
+      inset: -20vh -10vw;
+      background: repeating-linear-gradient(104deg, transparent 0 1.2rem, rgba(186, 230, 255, 0.22) 1.28rem 1.36rem);
+      opacity: 0.52;
+      animation: rain-fall 1.9s linear infinite;
+    }
+
+    .rain-city {
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 31vh;
+      background:
+        repeating-linear-gradient(90deg, rgba(255, 185, 101, 0.16) 0 0.28rem, transparent 0.28rem 2.8rem),
+        linear-gradient(180deg, transparent 0 18%, rgba(3, 10, 22, 0.96) 19%);
+      opacity: 0.72;
+    }
+
+    .comet {
+      width: 12rem;
+      height: 1px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255, 236, 203, 0.9));
+      box-shadow: 0 0 1.4rem rgba(139, 222, 255, 0.32);
+      opacity: 0;
+      transform: rotate(-26deg);
+      animation: comet-pass 8.5s linear infinite;
+    }
+
+    .comet.one {
+      top: 18vh;
+      left: -14rem;
+    }
+
+    .comet.two {
+      top: 36vh;
+      left: -18rem;
+      width: 9rem;
+      animation-delay: 2.8s;
+      animation-duration: 10s;
+    }
+
+    .comet.three {
+      top: 12vh;
+      left: -22rem;
+      width: 15rem;
+      animation-delay: 5.6s;
+      animation-duration: 12s;
+    }
+
+    .comet-haze {
+      right: -6vw;
+      bottom: 0;
+      left: -6vw;
+      height: 36vh;
+      background:
+        radial-gradient(ellipse at 28% 100%, rgba(63, 95, 173, 0.32), transparent 32%),
+        radial-gradient(ellipse at 80% 96%, rgba(46, 171, 171, 0.22), transparent 34%),
+        linear-gradient(180deg, transparent, rgba(1, 5, 13, 0.94));
     }
 
     .sky {
@@ -489,9 +819,9 @@
 
     .world-clocks {
       display: grid;
-      grid-template-columns: repeat(3, minmax(8.6rem, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(8.6rem, 1fr));
       gap: clamp(0.6rem, 1.2vw, 0.9rem);
-      width: min(72vw, 46rem);
+      width: min(78vw, 58rem);
       margin: clamp(1rem, 2.5vw, 1.8rem) auto 0;
     }
 
@@ -588,6 +918,43 @@
       grid-template-columns: auto minmax(8rem, 1.1fr) minmax(9rem, 12rem) minmax(16rem, 1fr);
     }
 
+    .control-row.zones {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .zone-control-label {
+      min-width: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .zone-picker-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.8rem, 1fr));
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .zone-picker {
+      display: flex;
+      min-width: 0;
+      gap: 0.35rem;
+    }
+
+    .zone-select {
+      flex: 1 1 auto;
+    }
+
+    .zone-remove {
+      min-width: 2.28rem;
+      padding: 0;
+    }
+
     .icon-button,
     .theme-button {
       display: inline-grid;
@@ -620,6 +987,11 @@
       border-color: rgba(var(--glow-b), 0.72);
       background: rgba(var(--glow-a), 0.2);
       box-shadow: 0 0 1.2rem rgba(var(--glow-b), 0.14);
+    }
+
+    .icon-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.44;
     }
 
     .theme-button {
@@ -671,6 +1043,12 @@
     select {
       padding: 0 0.7rem;
       cursor: pointer;
+    }
+
+    .scene-select {
+      flex: 0 1 13.6rem;
+      width: auto;
+      min-width: 11.4rem;
     }
 
     .message-input {
@@ -788,6 +1166,44 @@
       }
     }
 
+    @keyframes aurora-sway {
+      from {
+        transform: translate3d(-3vw, -1vh, 0) rotate(-5deg) scaleX(1);
+      }
+
+      to {
+        transform: translate3d(3vw, 2vh, 0) rotate(7deg) scaleX(1.08);
+      }
+    }
+
+    @keyframes rain-fall {
+      from {
+        transform: translate3d(-1rem, -7rem, 0);
+      }
+
+      to {
+        transform: translate3d(1rem, 7rem, 0);
+      }
+    }
+
+    @keyframes comet-pass {
+      0% {
+        opacity: 0;
+        transform: translate3d(0, 0, 0) rotate(-26deg);
+      }
+
+      10%,
+      24% {
+        opacity: 0.86;
+      }
+
+      36%,
+      100% {
+        opacity: 0;
+        transform: translate3d(125vw, 46vh, 0) rotate(-26deg);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -812,8 +1228,20 @@
         grid-template-columns: auto minmax(8rem, 1fr);
       }
 
+      .control-row.zones {
+        grid-template-columns: 1fr auto;
+      }
+
+      .zone-control-label {
+        display: none;
+      }
+
+      .zone-picker-list {
+        grid-template-columns: 1fr;
+      }
+
       .world-clocks {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(6.2rem, 1fr));
         gap: 0.42rem;
         width: min(92vw, 24rem);
       }
@@ -849,8 +1277,10 @@
 </head>
 <body class="theme-midnight">
   <main class="app" id="app">
+    <div class="media-background" id="mediaBackground" aria-hidden="true"></div>
     <div class="sky"></div>
     <div class="aurora"></div>
+    <div class="library-scene" id="libraryScene" aria-hidden="true"></div>
     <div class="room-scene" aria-hidden="true">
       <div class="room-window">
         <span class="moon"></span>
@@ -903,6 +1333,16 @@
         <button class="icon-button" id="dateButton" title="Toggle date" aria-label="Toggle date">date</button>
         <button class="icon-button" id="awayButton" title="Toggle away note" aria-label="Toggle away note">away</button>
         <button class="icon-button" id="worldButton" title="Toggle friend clocks" aria-label="Toggle friend clocks">zones</button>
+        <select class="scene-select" id="backgroundSelect" title="Background library" aria-label="Background library"></select>
+        <button class="icon-button" id="backgroundButton" title="Choose background image, GIF, or video" aria-label="Choose background image, GIF, or video">bg</button>
+        <button class="icon-button" id="clearBackgroundButton" title="Clear custom background" aria-label="Clear custom background" hidden>reset</button>
+        <input class="file-input" id="backgroundInput" type="file" accept="image/*,video/mp4,video/webm,video/quicktime" aria-label="Background media">
+      </div>
+
+      <div class="control-row zones" id="zoneControls">
+        <span class="zone-control-label">zones</span>
+        <div class="zone-picker-list" id="zonePickerList" aria-label="Visible timezone clocks"></div>
+        <button class="icon-button" id="addZoneButton" title="Add timezone clock" aria-label="Add timezone clock">+</button>
       </div>
 
       <div class="control-row audio">
@@ -921,6 +1361,44 @@
 
   <script>
     const storageKey = "night-display-settings";
+    const maxWorldClocks = 6;
+    const defaultWorldClocks = [
+      { label: "Sydney", zone: "Australia/Sydney" },
+      { label: "Perth", zone: "Australia/Perth" },
+      { label: "London", zone: "Europe/London" }
+    ];
+
+    const timezoneLibrary = [
+      { label: "Australia · Sydney", clockLabel: "Sydney", zone: "Australia/Sydney" },
+      { label: "Australia · Perth", clockLabel: "Perth", zone: "Australia/Perth" },
+      { label: "Malaysia · Kuala Lumpur", clockLabel: "Malaysia", zone: "Asia/Kuala_Lumpur" },
+      { label: "Singapore", clockLabel: "Singapore", zone: "Asia/Singapore" },
+      { label: "Indonesia · Jakarta", clockLabel: "Jakarta", zone: "Asia/Jakarta" },
+      { label: "Philippines · Manila", clockLabel: "Manila", zone: "Asia/Manila" },
+      { label: "Thailand · Bangkok", clockLabel: "Bangkok", zone: "Asia/Bangkok" },
+      { label: "Japan · Tokyo", clockLabel: "Tokyo", zone: "Asia/Tokyo" },
+      { label: "South Korea · Seoul", clockLabel: "Seoul", zone: "Asia/Seoul" },
+      { label: "China · Shanghai", clockLabel: "Shanghai", zone: "Asia/Shanghai" },
+      { label: "India · Mumbai", clockLabel: "Mumbai", zone: "Asia/Kolkata" },
+      { label: "UAE · Dubai", clockLabel: "Dubai", zone: "Asia/Dubai" },
+      { label: "Saudi Arabia · Riyadh", clockLabel: "Riyadh", zone: "Asia/Riyadh" },
+      { label: "United Kingdom · London", clockLabel: "London", zone: "Europe/London" },
+      { label: "France · Paris", clockLabel: "Paris", zone: "Europe/Paris" },
+      { label: "Germany · Berlin", clockLabel: "Berlin", zone: "Europe/Berlin" },
+      { label: "Netherlands · Amsterdam", clockLabel: "Amsterdam", zone: "Europe/Amsterdam" },
+      { label: "South Africa · Johannesburg", clockLabel: "Johannesburg", zone: "Africa/Johannesburg" },
+      { label: "United States · New York", clockLabel: "New York", zone: "America/New_York" },
+      { label: "United States · Chicago", clockLabel: "Chicago", zone: "America/Chicago" },
+      { label: "United States · Los Angeles", clockLabel: "Los Angeles", zone: "America/Los_Angeles" },
+      { label: "Canada · Toronto", clockLabel: "Toronto", zone: "America/Toronto" },
+      { label: "Canada · Vancouver", clockLabel: "Vancouver", zone: "America/Vancouver" },
+      { label: "Mexico · Mexico City", clockLabel: "Mexico City", zone: "America/Mexico_City" },
+      { label: "Brazil · Sao Paulo", clockLabel: "Sao Paulo", zone: "America/Sao_Paulo" },
+      { label: "New Zealand · Auckland", clockLabel: "Auckland", zone: "Pacific/Auckland" },
+      { label: "Hawaii · Honolulu", clockLabel: "Honolulu", zone: "Pacific/Honolulu" },
+      { label: "UTC", clockLabel: "UTC", zone: "UTC" }
+    ];
+
     const defaults = {
       theme: "midnight",
       brightness: 0.72,
@@ -931,26 +1409,80 @@
       showWorld: true,
       message: "away · asleep probably",
       sound: "waves",
-      volume: 0.28
+      volume: 0.28,
+      worldClocks: defaultWorldClocks.map((clock) => ({ ...clock })),
+      backgroundChoice: "lofi",
+      backgroundName: "",
+      backgroundType: ""
     };
+    const backgroundDbName = "night-display-media";
+    const backgroundStoreName = "backgrounds";
+    const backgroundStoreKey = "current";
 
-    const friendClocks = [
-      { label: "Sydney", zone: "Australia/Sydney" },
-      { label: "Perth", zone: "Australia/Perth" },
-      { label: "London", zone: "Europe/London" }
+    const backgroundLibrary = [
+      { id: "lofi", label: "Lofi room · live" },
+      { id: "lake", label: "Moon lake · still" },
+      { id: "paper", label: "Paper stars · still" },
+      { id: "aurora-live", label: "Aurora veil · live" },
+      { id: "rain-live", label: "Rain glass · live" },
+      { id: "comets-live", label: "Comet drift · live" }
     ];
+
+    const backgroundClasses = [
+      ...backgroundLibrary.map((background) => `background-${background.id}`),
+      "background-custom"
+    ];
+
+    const librarySceneMarkup = {
+      lofi: "",
+      lake: `
+        <span class="lake-moon"></span>
+        <span class="lake-ridge back"></span>
+        <span class="lake-ridge"></span>
+        <span class="lake-water"></span>
+        <span class="lake-shore"></span>
+      `,
+      paper: `
+        <span class="paper-star one"></span>
+        <span class="paper-star two"></span>
+        <span class="paper-star three"></span>
+        <span class="paper-horizon"></span>
+        <span class="paper-hills"></span>
+      `,
+      "aurora-live": `
+        <span class="aurora-band one"></span>
+        <span class="aurora-band two"></span>
+        <span class="aurora-ground"></span>
+      `,
+      "rain-live": `
+        <span class="rain-city"></span>
+        <span class="rain-window"></span>
+        <span class="rain-drops"></span>
+      `,
+      "comets-live": `
+        <span class="comet one"></span>
+        <span class="comet two"></span>
+        <span class="comet three"></span>
+        <span class="comet-haze"></span>
+      `
+    };
 
     const state = loadSettings();
     const elements = {
       app: document.getElementById("app"),
       body: document.body,
       stage: document.getElementById("clockStage"),
+      mediaBackground: document.getElementById("mediaBackground"),
+      libraryScene: document.getElementById("libraryScene"),
       time: document.getElementById("time"),
       date: document.getElementById("date"),
       away: document.getElementById("away"),
       awayText: document.getElementById("awayText"),
       worldClocks: document.getElementById("worldClocks"),
       controls: document.getElementById("controls"),
+      zoneControls: document.getElementById("zoneControls"),
+      zonePickerList: document.getElementById("zonePickerList"),
+      addZoneButton: document.getElementById("addZoneButton"),
       fullscreenButton: document.getElementById("fullscreenButton"),
       brightness: document.getElementById("brightness"),
       formatButton: document.getElementById("formatButton"),
@@ -961,7 +1493,11 @@
       audioButton: document.getElementById("audioButton"),
       soundSelect: document.getElementById("soundSelect"),
       volume: document.getElementById("volume"),
-      messageInput: document.getElementById("messageInput")
+      messageInput: document.getElementById("messageInput"),
+      backgroundSelect: document.getElementById("backgroundSelect"),
+      backgroundButton: document.getElementById("backgroundButton"),
+      clearBackgroundButton: document.getElementById("clearBackgroundButton"),
+      backgroundInput: document.getElementById("backgroundInput")
     };
 
     const canvas = document.getElementById("nightCanvas");
@@ -973,18 +1509,137 @@
     let dpr = 1;
     let idleTimer = 0;
     let audio = null;
+    let backgroundUrl = "";
 
     function loadSettings() {
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
-        return { ...defaults, ...saved };
+        return normalizeSettings({ ...defaults, ...saved });
       } catch {
-        return { ...defaults };
+        return normalizeSettings({ ...defaults });
       }
     }
 
     function saveSettings() {
       localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    function getDefaultWorldClocks() {
+      return defaultWorldClocks.map((clock) => ({ ...clock }));
+    }
+
+    function isValidTimeZone(zone) {
+      try {
+        new Intl.DateTimeFormat(undefined, { timeZone: zone }).format();
+        return true;
+      } catch {
+        return false;
+      }
+    }
+
+    function getTimezoneOption(zone) {
+      return timezoneLibrary.find((option) => option.zone === zone);
+    }
+
+    function normalizeWorldClocks(clocks) {
+      const source = Array.isArray(clocks) ? clocks : getDefaultWorldClocks();
+      const normalized = source
+        .map((clock) => {
+          const option = getTimezoneOption(clock.zone);
+
+          if (option) {
+            return {
+              label: option.clockLabel,
+              zone: option.zone
+            };
+          }
+
+          if (clock.label && clock.zone && isValidTimeZone(clock.zone)) {
+            return {
+              label: String(clock.label).slice(0, 24),
+              zone: clock.zone
+            };
+          }
+
+          return null;
+        })
+        .filter(Boolean)
+        .slice(0, maxWorldClocks);
+
+      return normalized.length ? normalized : getDefaultWorldClocks();
+    }
+
+    function normalizeSettings(settings) {
+      return {
+        ...settings,
+        worldClocks: normalizeWorldClocks(settings.worldClocks)
+      };
+    }
+
+    function normalizeBackgroundChoice() {
+      if (state.backgroundChoice === "custom" && !state.backgroundName) {
+        state.backgroundChoice = "lofi";
+      }
+
+      if (state.backgroundChoice !== "custom" && !Object.prototype.hasOwnProperty.call(librarySceneMarkup, state.backgroundChoice)) {
+        state.backgroundChoice = "lofi";
+      }
+
+      return state.backgroundChoice;
+    }
+
+    function populateBackgroundSelect() {
+      const options = [...backgroundLibrary];
+
+      if (state.backgroundName) {
+        options.push({
+          id: "custom",
+          label: `My upload · ${state.backgroundName}`
+        });
+      }
+
+      elements.backgroundSelect.replaceChildren(...options.map((background) => {
+        const option = new Option(background.label, background.id);
+        return option;
+      }));
+
+      elements.backgroundSelect.value = options.some((background) => background.id === state.backgroundChoice)
+        ? state.backgroundChoice
+        : "lofi";
+    }
+
+    function updateBackgroundControls() {
+      const hasUpload = Boolean(state.backgroundName);
+      const isCustomActive = state.backgroundChoice === "custom" && elements.app.classList.contains("has-custom-background");
+
+      elements.clearBackgroundButton.hidden = !hasUpload;
+      elements.backgroundButton.setAttribute("aria-pressed", String(isCustomActive));
+      elements.backgroundButton.title = hasUpload
+        ? `Change uploaded background: ${state.backgroundName}`
+        : "Choose background image, GIF, or video";
+      elements.clearBackgroundButton.title = hasUpload
+        ? `Remove uploaded background: ${state.backgroundName}`
+        : "Clear custom background";
+    }
+
+    function applyBackgroundChoice() {
+      const choice = normalizeBackgroundChoice();
+
+      elements.app.classList.remove(...backgroundClasses);
+      elements.libraryScene.replaceChildren();
+
+      if (choice === "custom") {
+        elements.app.classList.add("background-custom");
+        populateBackgroundSelect();
+        updateBackgroundControls();
+        return;
+      }
+
+      renderCustomBackground(null);
+      elements.app.classList.add(`background-${choice}`);
+      elements.libraryScene.innerHTML = librarySceneMarkup[choice] || "";
+      populateBackgroundSelect();
+      updateBackgroundControls();
     }
 
     function applySettings() {
@@ -1000,10 +1655,13 @@
       elements.date.hidden = !state.showDate;
       elements.away.hidden = !state.showAway;
       elements.worldClocks.hidden = !state.showWorld;
+      elements.zoneControls.hidden = !state.showWorld;
       elements.awayText.textContent = state.message || defaults.message;
       elements.messageInput.value = state.message;
       elements.soundSelect.value = state.sound;
       elements.volume.value = state.volume;
+      applyBackgroundChoice();
+      renderZoneControls();
 
       document.querySelectorAll(".theme-button").forEach((button) => {
         button.setAttribute("aria-pressed", String(button.dataset.theme === state.theme));
@@ -1011,6 +1669,294 @@
 
       renderTime();
       renderWorldClocks();
+    }
+
+    function makeTimezoneOption(option, selectedZone) {
+      const element = new Option(option.label, option.zone);
+      element.selected = option.zone === selectedZone;
+      return element;
+    }
+
+    function renderZoneControls() {
+      state.worldClocks = normalizeWorldClocks(state.worldClocks);
+      elements.zonePickerList.replaceChildren(...state.worldClocks.map((clock, index) => {
+        const picker = document.createElement("div");
+        const select = document.createElement("select");
+        const removeButton = document.createElement("button");
+        const knownOption = getTimezoneOption(clock.zone);
+
+        picker.className = "zone-picker";
+        select.className = "zone-select";
+        select.dataset.zoneIndex = String(index);
+        select.title = `Timezone clock ${index + 1}`;
+        select.setAttribute("aria-label", `Timezone clock ${index + 1}`);
+        select.replaceChildren(...timezoneLibrary.map((option) => makeTimezoneOption(option, clock.zone)));
+
+        if (!knownOption) {
+          select.append(makeTimezoneOption({
+            label: `${clock.label} · saved`,
+            zone: clock.zone
+          }, clock.zone));
+        }
+
+        removeButton.className = "icon-button zone-remove";
+        removeButton.type = "button";
+        removeButton.textContent = "-";
+        removeButton.dataset.zoneIndex = String(index);
+        removeButton.title = `Remove ${clock.label}`;
+        removeButton.setAttribute("aria-label", `Remove ${clock.label}`);
+        removeButton.disabled = state.worldClocks.length <= 1;
+
+        picker.append(select, removeButton);
+        return picker;
+      }));
+
+      elements.addZoneButton.disabled = state.worldClocks.length >= maxWorldClocks;
+      elements.addZoneButton.title = elements.addZoneButton.disabled
+        ? `Maximum ${maxWorldClocks} timezone clocks`
+        : "Add timezone clock";
+    }
+
+    function setWorldClock(index, zone) {
+      const option = getTimezoneOption(zone);
+
+      if (!option || !state.worldClocks[index]) {
+        return;
+      }
+
+      state.worldClocks[index] = {
+        label: option.clockLabel,
+        zone: option.zone
+      };
+      saveSettings();
+      renderZoneControls();
+      renderWorldClocks();
+    }
+
+    function addWorldClock() {
+      if (state.worldClocks.length >= maxWorldClocks) {
+        return;
+      }
+
+      const usedZones = new Set(state.worldClocks.map((clock) => clock.zone));
+      const nextOption = timezoneLibrary.find((option) => !usedZones.has(option.zone)) || timezoneLibrary[0];
+
+      state.worldClocks.push({
+        label: nextOption.clockLabel,
+        zone: nextOption.zone
+      });
+      saveSettings();
+      applySettings();
+    }
+
+    function removeWorldClock(index) {
+      if (state.worldClocks.length <= 1 || !state.worldClocks[index]) {
+        return;
+      }
+
+      state.worldClocks.splice(index, 1);
+      saveSettings();
+      applySettings();
+    }
+
+    function revokeBackgroundUrl() {
+      if (!backgroundUrl) {
+        return;
+      }
+
+      URL.revokeObjectURL(backgroundUrl);
+      backgroundUrl = "";
+    }
+
+    function renderCustomBackground(media) {
+      revokeBackgroundUrl();
+      elements.mediaBackground.replaceChildren();
+
+      if (!media || !media.blob) {
+        elements.app.classList.remove("has-custom-background");
+        updateBackgroundControls();
+        return;
+      }
+
+      backgroundUrl = URL.createObjectURL(media.blob);
+      const mediaType = media.type || "";
+      const isVideo = mediaType.startsWith("video/");
+      const mediaElement = document.createElement(isVideo ? "video" : "img");
+
+      mediaElement.src = backgroundUrl;
+
+      if (isVideo) {
+        mediaElement.autoplay = true;
+        mediaElement.loop = true;
+        mediaElement.muted = true;
+        mediaElement.playsInline = true;
+        mediaElement.setAttribute("playsinline", "");
+        mediaElement.addEventListener("canplay", () => {
+          mediaElement.play().catch(() => {});
+        }, { once: true });
+      } else {
+        mediaElement.alt = "";
+      }
+
+      elements.mediaBackground.append(mediaElement);
+      elements.app.classList.add("has-custom-background");
+      updateBackgroundControls();
+    }
+
+    function openBackgroundDb() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(backgroundDbName, 1);
+
+        request.onupgradeneeded = () => {
+          request.result.createObjectStore(backgroundStoreName);
+        };
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    async function writeStoredBackground(file) {
+      const db = await openBackgroundDb();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(backgroundStoreName, "readwrite");
+        const store = transaction.objectStore(backgroundStoreName);
+
+        store.put({
+          blob: file,
+          name: file.name,
+          type: file.type
+        }, backgroundStoreKey);
+
+        transaction.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+
+        transaction.onerror = () => {
+          db.close();
+          reject(transaction.error);
+        };
+      });
+    }
+
+    async function readStoredBackground() {
+      const db = await openBackgroundDb();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(backgroundStoreName, "readonly");
+        const request = transaction.objectStore(backgroundStoreName).get(backgroundStoreKey);
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+        transaction.oncomplete = () => db.close();
+        transaction.onerror = () => {
+          db.close();
+          reject(transaction.error);
+        };
+      });
+    }
+
+    async function deleteStoredBackground() {
+      const db = await openBackgroundDb();
+
+      return new Promise((resolve, reject) => {
+        const transaction = db.transaction(backgroundStoreName, "readwrite");
+
+        transaction.objectStore(backgroundStoreName).delete(backgroundStoreKey);
+        transaction.oncomplete = () => {
+          db.close();
+          resolve();
+        };
+
+        transaction.onerror = () => {
+          db.close();
+          reject(transaction.error);
+        };
+      });
+    }
+
+    async function restoreStoredBackground({ activate = state.backgroundChoice === "custom" } = {}) {
+      try {
+        const media = await readStoredBackground();
+
+        if (!media || !media.blob) {
+          state.backgroundName = "";
+          state.backgroundType = "";
+
+          if (state.backgroundChoice === "custom") {
+            state.backgroundChoice = "lofi";
+          }
+
+          saveSettings();
+          applyBackgroundChoice();
+          return;
+        }
+
+        state.backgroundName = media.name || "";
+        state.backgroundType = media.type || "";
+        if (activate) {
+          state.backgroundChoice = "custom";
+          elements.app.classList.remove(...backgroundClasses);
+          elements.app.classList.add("background-custom");
+          elements.libraryScene.replaceChildren();
+          renderCustomBackground(media);
+        } else {
+          updateBackgroundControls();
+        }
+
+        populateBackgroundSelect();
+        saveSettings();
+      } catch (error) {
+        console.warn("Could not restore the custom background.", error);
+        updateBackgroundControls();
+      }
+    }
+
+    async function setBackgroundFile(file) {
+      const fileType = file ? file.type || "" : "";
+
+      if (!file || (!fileType.startsWith("image/") && !fileType.startsWith("video/"))) {
+        return;
+      }
+
+      state.backgroundName = file.name;
+      state.backgroundType = file.type;
+      state.backgroundChoice = "custom";
+      saveSettings();
+      elements.app.classList.remove(...backgroundClasses);
+      elements.app.classList.add("background-custom");
+      elements.libraryScene.replaceChildren();
+      renderCustomBackground({
+        blob: file,
+        name: file.name,
+        type: file.type
+      });
+      populateBackgroundSelect();
+
+      try {
+        await writeStoredBackground(file);
+      } catch (error) {
+        console.warn("The custom background is active for this session, but could not be saved.", error);
+      }
+    }
+
+    async function clearCustomBackground() {
+      state.backgroundName = "";
+      state.backgroundType = "";
+      if (state.backgroundChoice === "custom") {
+        state.backgroundChoice = "lofi";
+      }
+      saveSettings();
+      renderCustomBackground(null);
+      applyBackgroundChoice();
+
+      try {
+        await deleteStoredBackground();
+      } catch (error) {
+        console.warn("Could not remove the stored custom background.", error);
+      }
     }
 
     function renderTime() {
@@ -1049,14 +1995,18 @@
     }
 
     function renderWorldClocks(now = new Date()) {
-      elements.worldClocks.innerHTML = friendClocks.map((clock) => {
+      state.worldClocks = normalizeWorldClocks(state.worldClocks);
+      elements.worldClocks.replaceChildren(...state.worldClocks.map((clock) => {
+        const article = document.createElement("article");
+        const label = document.createElement("div");
+        const timeElement = document.createElement("div");
+        const dateElement = document.createElement("div");
         const time = new Intl.DateTimeFormat(undefined, {
           timeZone: clock.zone,
           hour: "numeric",
           minute: "2-digit",
           hour12: !state.use24h
         }).format(now);
-
         const date = new Intl.DateTimeFormat(undefined, {
           timeZone: clock.zone,
           weekday: "short",
@@ -1065,14 +2015,17 @@
           timeZoneName: "short"
         }).format(now);
 
-        return `
-          <article class="zone-clock">
-            <div class="zone-label">${clock.label}</div>
-            <div class="zone-time">${time}</div>
-            <div class="zone-date">${date}</div>
-          </article>
-        `;
-      }).join("");
+        article.className = "zone-clock";
+        label.className = "zone-label";
+        timeElement.className = "zone-time";
+        dateElement.className = "zone-date";
+        label.textContent = clock.label;
+        timeElement.textContent = time;
+        dateElement.textContent = date;
+        article.append(label, timeElement, dateElement);
+
+        return article;
+      }));
     }
 
     function resizeCanvas() {
@@ -1439,6 +2392,52 @@
       applySettings();
     });
 
+    elements.zonePickerList.addEventListener("change", (event) => {
+      if (!event.target.matches(".zone-select")) {
+        return;
+      }
+
+      setWorldClock(Number(event.target.dataset.zoneIndex), event.target.value);
+    });
+
+    elements.zonePickerList.addEventListener("click", (event) => {
+      const removeButton = event.target.closest(".zone-remove");
+
+      if (!removeButton) {
+        return;
+      }
+
+      removeWorldClock(Number(removeButton.dataset.zoneIndex));
+    });
+
+    elements.addZoneButton.addEventListener("click", addWorldClock);
+
+    elements.backgroundSelect.addEventListener("change", (event) => {
+      const choice = event.target.value;
+
+      if (choice === "custom") {
+        restoreStoredBackground({ activate: true });
+        return;
+      }
+
+      state.backgroundChoice = choice;
+      saveSettings();
+      applySettings();
+    });
+
+    elements.backgroundButton.addEventListener("click", () => {
+      elements.backgroundInput.click();
+    });
+
+    elements.backgroundInput.addEventListener("change", (event) => {
+      const [file] = event.target.files;
+
+      setBackgroundFile(file);
+      event.target.value = "";
+    });
+
+    elements.clearBackgroundButton.addEventListener("click", clearCustomBackground);
+
     elements.audioButton.addEventListener("click", toggleAudio);
 
     elements.soundSelect.addEventListener("change", (event) => {
@@ -1472,6 +2471,7 @@
 
     resizeCanvas();
     applySettings();
+    restoreStoredBackground();
     drawNight();
     renderTime();
     showControls();

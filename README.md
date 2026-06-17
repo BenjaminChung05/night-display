@@ -9,10 +9,12 @@ Night Display shows a large glowing clock over a cozy blue lofi-style room scene
 - Large elegant clock with optional seconds
 - Cozy animated blue night-room background
 - Away status message for friends on call
-- Friend clocks for Sydney, Perth, and London
+- Customizable friend clocks with add/remove timezone slots
 - Brightness dimmer for dark rooms
 - Fullscreen mode
 - Theme swatches
+- Built-in still and live background library
+- Custom photo, GIF, or video background
 - Optional date display
 - Generated ambient sounds: Waves, Rain, Hush, and Dream pad
 - Settings saved in the browser
@@ -25,6 +27,12 @@ Open `index.html` in a browser.
 For Discord, share the browser window, click the fullscreen button, choose a sound if you want one, then let the controls fade away.
 
 Browsers require a click before audio can start, so press the play button once after opening the page.
+
+Use the `bg` button to choose a local image, GIF, or video background. The file is stored in that browser only and can be removed with `reset`.
+
+Use the background dropdown to choose from the built-in library: the original lofi room, still scenes, and live animated scenes. If you upload your own background, it appears as `My upload` in that same library.
+
+Use the timezone row to choose which country or city clocks appear. The `+` button adds another clock, and each `-` button removes one.
 
 ## Running Locally
 
@@ -40,12 +48,19 @@ Then open:
 http://localhost:4173
 ```
 
+## Publishing
+
+This is a static site, so pushing `index.html` to GitHub makes the source available, but visitors need a hosted URL to use it easily. Netlify can publish straight from the GitHub repo; after you push changes, trigger a new deploy or let Netlify auto-deploy from the connected branch.
+
+The status message, toggles, chosen timezones, chosen library background, and custom background stay in each visitor's own browser storage. The app does not send those choices to GitHub, Netlify, or a shared server.
+
 ## Customizing
 
 The app is currently a single `index.html` file. You can edit:
 
 - The away message from the on-screen input
-- The friend clocks in the `friendClocks` array
+- The default friend clocks in the `defaultWorldClocks` array
+- The available timezone choices in the `timezoneLibrary` array
 - The theme colors in the CSS theme classes
 - The ambient sound options in the audio engine
 
