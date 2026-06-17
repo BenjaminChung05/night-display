@@ -99,10 +99,289 @@
       animation: drift 26s ease-in-out infinite alternate;
     }
 
-    canvas {
+    .room-scene {
       position: fixed;
       inset: 0;
       z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0.78;
+    }
+
+    .room-scene::before {
+      position: absolute;
+      inset: auto -8vw 0;
+      height: 44vh;
+      content: "";
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(67, 151, 255, 0.2), transparent 55%),
+        linear-gradient(180deg, rgba(4, 13, 31, 0), rgba(1, 4, 13, 0.88) 42%, rgba(0, 0, 0, 0.96));
+    }
+
+    .room-window {
+      position: absolute;
+      top: clamp(1.2rem, 6vh, 4rem);
+      left: clamp(1rem, 7vw, 6rem);
+      width: clamp(13rem, 24vw, 23rem);
+      height: clamp(15rem, 42vh, 29rem);
+      border: 1px solid rgba(172, 224, 255, 0.14);
+      border-radius: 16px 16px 6px 6px;
+      background:
+        linear-gradient(90deg, transparent calc(50% - 1px), rgba(169, 219, 255, 0.12) 50%, transparent calc(50% + 1px)),
+        linear-gradient(180deg, transparent calc(58% - 1px), rgba(169, 219, 255, 0.1) 58%, transparent calc(58% + 1px)),
+        radial-gradient(circle at 70% 18%, rgba(179, 221, 255, 0.18), transparent 12%),
+        linear-gradient(180deg, rgba(9, 24, 55, 0.74), rgba(3, 10, 28, 0.78));
+      box-shadow:
+        inset 0 0 3rem rgba(82, 179, 255, 0.08),
+        0 0 4rem rgba(31, 129, 226, 0.08);
+    }
+
+    .room-window::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      border-radius: inherit;
+      background-image:
+        linear-gradient(112deg, transparent 0 38%, rgba(161, 221, 255, 0.16) 39%, transparent 42%),
+        repeating-linear-gradient(104deg, rgba(181, 232, 255, 0) 0 1.1rem, rgba(181, 232, 255, 0.13) 1.2rem 1.28rem);
+      background-size: 100% 100%, 12rem 16rem;
+      animation: rain-slide 11s linear infinite;
+      opacity: 0.58;
+    }
+
+    .room-window::after {
+      position: absolute;
+      right: -1rem;
+      bottom: -0.8rem;
+      left: -1rem;
+      height: 2.1rem;
+      content: "";
+      border-radius: 6px;
+      background: linear-gradient(180deg, rgba(25, 51, 82, 0.78), rgba(4, 10, 25, 0.88));
+      box-shadow: 0 0.8rem 1.8rem rgba(0, 0, 0, 0.34);
+    }
+
+    .moon {
+      position: absolute;
+      top: 12%;
+      right: 16%;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      background: rgba(220, 246, 255, 0.72);
+      box-shadow:
+        0 0 1.2rem rgba(190, 232, 255, 0.42),
+        0 0 4rem rgba(111, 186, 255, 0.26);
+    }
+
+    .building {
+      position: absolute;
+      bottom: 1.6rem;
+      display: block;
+      border-radius: 4px 4px 0 0;
+      background:
+        repeating-linear-gradient(180deg, rgba(158, 222, 255, 0.18) 0 0.16rem, transparent 0.18rem 0.72rem),
+        linear-gradient(180deg, rgba(13, 38, 80, 0.85), rgba(2, 8, 24, 0.96));
+      opacity: 0.8;
+    }
+
+    .building-one {
+      left: 8%;
+      width: 14%;
+      height: 32%;
+    }
+
+    .building-two {
+      left: 26%;
+      width: 18%;
+      height: 45%;
+    }
+
+    .building-three {
+      right: 28%;
+      width: 15%;
+      height: 28%;
+    }
+
+    .building-four {
+      right: 8%;
+      width: 18%;
+      height: 38%;
+    }
+
+    .shelf {
+      position: absolute;
+      top: clamp(5rem, 12vh, 9rem);
+      right: clamp(1rem, 7vw, 5rem);
+      display: flex;
+      align-items: flex-end;
+      gap: 0.55rem;
+      width: clamp(10rem, 18vw, 17rem);
+      height: 3.6rem;
+      padding: 0 1rem 0.5rem;
+      border-bottom: 0.35rem solid rgba(38, 72, 111, 0.62);
+      opacity: 0.72;
+    }
+
+    .shelf span {
+      display: block;
+      width: 1.05rem;
+      border-radius: 4px 4px 0 0;
+      background: linear-gradient(180deg, rgba(130, 199, 255, 0.34), rgba(12, 32, 67, 0.84));
+    }
+
+    .shelf span:nth-child(1) {
+      height: 2.7rem;
+    }
+
+    .shelf span:nth-child(2) {
+      height: 2rem;
+      background: linear-gradient(180deg, rgba(255, 203, 122, 0.3), rgba(61, 43, 24, 0.75));
+    }
+
+    .shelf span:nth-child(3) {
+      width: 3rem;
+      height: 1.35rem;
+    }
+
+    .desk {
+      position: absolute;
+      right: clamp(1rem, 6vw, 5rem);
+      bottom: 0;
+      left: clamp(1rem, 6vw, 5rem);
+      height: clamp(7rem, 18vh, 11rem);
+      border-radius: 18px 18px 0 0;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 18% 78%, rgba(255, 255, 255, 0.03)),
+        linear-gradient(180deg, rgba(26, 51, 79, 0.74), rgba(4, 10, 24, 0.96));
+      box-shadow:
+        inset 0 1px 0 rgba(197, 230, 255, 0.08),
+        0 -1.8rem 5rem rgba(0, 0, 0, 0.22);
+    }
+
+    .lamp {
+      position: absolute;
+      right: clamp(4rem, 13vw, 12rem);
+      bottom: 2rem;
+      width: 4.8rem;
+      height: 6.8rem;
+    }
+
+    .lamp::before {
+      position: absolute;
+      top: -3.8rem;
+      left: 50%;
+      width: 14rem;
+      height: 14rem;
+      content: "";
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 192, 101, 0.22), rgba(255, 192, 101, 0.06) 45%, transparent 70%);
+      transform: translateX(-50%);
+      animation: lamp-breathe 5.8s ease-in-out infinite;
+    }
+
+    .lamp-shade {
+      position: absolute;
+      top: 0.45rem;
+      left: 0.7rem;
+      width: 3.5rem;
+      height: 1.8rem;
+      border-radius: 1rem 1rem 0.3rem 0.3rem;
+      background: linear-gradient(180deg, rgba(255, 209, 122, 0.92), rgba(119, 72, 42, 0.76));
+      box-shadow: 0 0 1.6rem rgba(255, 186, 93, 0.3);
+    }
+
+    .lamp-stem {
+      position: absolute;
+      left: 2.25rem;
+      bottom: 0.7rem;
+      width: 0.34rem;
+      height: 4.4rem;
+      border-radius: 999px;
+      background: rgba(111, 139, 165, 0.64);
+    }
+
+    .lamp-stem::after {
+      position: absolute;
+      right: -1.45rem;
+      bottom: -0.3rem;
+      width: 3.2rem;
+      height: 0.5rem;
+      content: "";
+      border-radius: 999px;
+      background: rgba(121, 99, 84, 0.7);
+    }
+
+    .mug {
+      position: absolute;
+      right: clamp(10rem, 24vw, 22rem);
+      bottom: 2.2rem;
+      width: 2.2rem;
+      height: 2.1rem;
+      border-radius: 0.35rem 0.35rem 0.7rem 0.7rem;
+      background: linear-gradient(180deg, rgba(176, 220, 255, 0.42), rgba(34, 70, 100, 0.72));
+      box-shadow: inset 0 0.16rem 0 rgba(230, 249, 255, 0.24);
+    }
+
+    .mug::after {
+      position: absolute;
+      top: 0.42rem;
+      right: -0.7rem;
+      width: 0.95rem;
+      height: 1.1rem;
+      content: "";
+      border: 0.22rem solid rgba(105, 163, 207, 0.58);
+      border-left: 0;
+      border-radius: 0 999px 999px 0;
+    }
+
+    .plant {
+      position: absolute;
+      left: clamp(3rem, 13vw, 12rem);
+      bottom: 2rem;
+      width: 4rem;
+      height: 4.8rem;
+    }
+
+    .plant::after {
+      position: absolute;
+      bottom: 0;
+      left: 1rem;
+      width: 2rem;
+      height: 1.5rem;
+      content: "";
+      border-radius: 0.25rem 0.25rem 0.7rem 0.7rem;
+      background: linear-gradient(180deg, rgba(63, 103, 134, 0.85), rgba(18, 36, 61, 0.95));
+    }
+
+    .plant span {
+      position: absolute;
+      bottom: 1.3rem;
+      left: 1.85rem;
+      width: 0.8rem;
+      height: 2.5rem;
+      border-radius: 999px 999px 0 999px;
+      background: rgba(73, 184, 164, 0.5);
+      transform-origin: bottom center;
+    }
+
+    .plant span:nth-child(1) {
+      transform: rotate(-38deg);
+    }
+
+    .plant span:nth-child(2) {
+      height: 3rem;
+      transform: rotate(4deg);
+    }
+
+    .plant span:nth-child(3) {
+      transform: rotate(39deg);
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
       width: 100%;
       height: 100%;
     }
@@ -110,7 +389,7 @@
     .vignette {
       position: fixed;
       inset: 0;
-      z-index: -1;
+      z-index: 0;
       pointer-events: none;
       background:
         radial-gradient(circle at center, transparent 28%, rgba(0, 3, 12, 0.22) 68%, rgba(0, 0, 0, 0.66) 100%),
@@ -118,6 +397,8 @@
     }
 
     .clock-stage {
+      position: relative;
+      z-index: 1;
       width: min(94vw, 1160px);
       padding: clamp(1.5rem, 4vw, 4.5rem);
       text-align: center;
@@ -191,7 +472,8 @@
     }
 
     .away[hidden],
-    .date[hidden] {
+    .date[hidden],
+    .world-clocks[hidden] {
       display: none;
     }
 
@@ -203,6 +485,59 @@
       background: rgb(var(--glow-b));
       box-shadow: 0 0 1rem rgba(var(--glow-b), 0.8);
       animation: pulse 2.8s ease-in-out infinite;
+    }
+
+    .world-clocks {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(8.6rem, 1fr));
+      gap: clamp(0.6rem, 1.2vw, 0.9rem);
+      width: min(72vw, 46rem);
+      margin: clamp(1rem, 2.5vw, 1.8rem) auto 0;
+    }
+
+    .zone-clock {
+      min-width: 0;
+      padding: 0.74rem 0.82rem;
+      border: 1px solid rgba(191, 230, 255, 0.13);
+      border-radius: 8px;
+      background: rgba(2, 10, 25, 0.36);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.04),
+        0 1rem 3rem rgba(0, 0, 0, 0.14);
+      backdrop-filter: blur(12px);
+    }
+
+    .zone-label {
+      overflow: hidden;
+      color: var(--muted);
+      font-size: clamp(0.66rem, 1.15vw, 0.76rem);
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .zone-time {
+      margin-top: 0.18rem;
+      color: rgba(235, 249, 255, 0.92);
+      font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+      font-size: clamp(1.22rem, 2.6vw, 1.72rem);
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum";
+      line-height: 1.05;
+      text-shadow: 0 0 0.9rem rgba(var(--glow-b), 0.14);
+    }
+
+    .zone-date {
+      margin-top: 0.16rem;
+      overflow: hidden;
+      color: var(--quiet);
+      font-size: clamp(0.66rem, 1.1vw, 0.74rem);
+      letter-spacing: 0.08em;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .controls {
@@ -430,6 +765,29 @@
       }
     }
 
+    @keyframes rain-slide {
+      from {
+        background-position: 0 0, 0 0;
+      }
+
+      to {
+        background-position: 0 0, -6rem 16rem;
+      }
+    }
+
+    @keyframes lamp-breathe {
+      0%,
+      100% {
+        opacity: 0.58;
+        transform: translateX(-50%) scale(0.95);
+      }
+
+      50% {
+        opacity: 0.86;
+        transform: translateX(-50%) scale(1.04);
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *,
       *::before,
@@ -454,6 +812,30 @@
         grid-template-columns: auto minmax(8rem, 1fr);
       }
 
+      .world-clocks {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.42rem;
+        width: min(92vw, 24rem);
+      }
+
+      .zone-clock {
+        padding: 0.55rem 0.34rem;
+      }
+
+      .zone-label {
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+      }
+
+      .zone-time {
+        font-size: clamp(0.95rem, 5.2vw, 1.16rem);
+      }
+
+      .zone-date {
+        font-size: 0.56rem;
+        letter-spacing: 0.04em;
+      }
+
       .message-input,
       .volume-label {
         grid-column: 1 / -1;
@@ -469,6 +851,32 @@
   <main class="app" id="app">
     <div class="sky"></div>
     <div class="aurora"></div>
+    <div class="room-scene" aria-hidden="true">
+      <div class="room-window">
+        <span class="moon"></span>
+        <span class="building building-one"></span>
+        <span class="building building-two"></span>
+        <span class="building building-three"></span>
+        <span class="building building-four"></span>
+      </div>
+      <div class="shelf">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="desk">
+        <div class="lamp">
+          <span class="lamp-shade"></span>
+          <span class="lamp-stem"></span>
+        </div>
+        <div class="mug"></div>
+        <div class="plant">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
     <canvas id="nightCanvas" aria-hidden="true"></canvas>
     <div class="vignette"></div>
 
@@ -479,6 +887,7 @@
         <span class="sleep-dot" aria-hidden="true"></span>
         <span id="awayText">away · asleep probably</span>
       </div>
+      <div class="world-clocks" id="worldClocks" aria-label="Friend time zones"></div>
     </section>
 
     <section class="controls" id="controls" aria-label="Night display controls">
@@ -493,6 +902,7 @@
         <button class="icon-button" id="secondsButton" title="Toggle seconds" aria-label="Toggle seconds">sec</button>
         <button class="icon-button" id="dateButton" title="Toggle date" aria-label="Toggle date">date</button>
         <button class="icon-button" id="awayButton" title="Toggle away note" aria-label="Toggle away note">away</button>
+        <button class="icon-button" id="worldButton" title="Toggle friend clocks" aria-label="Toggle friend clocks">zones</button>
       </div>
 
       <div class="control-row audio">
@@ -518,10 +928,17 @@
       showSeconds: true,
       showDate: true,
       showAway: true,
+      showWorld: true,
       message: "away · asleep probably",
       sound: "waves",
       volume: 0.28
     };
+
+    const friendClocks = [
+      { label: "Sydney", zone: "Australia/Sydney" },
+      { label: "Perth", zone: "Australia/Perth" },
+      { label: "London", zone: "Europe/London" }
+    ];
 
     const state = loadSettings();
     const elements = {
@@ -532,6 +949,7 @@
       date: document.getElementById("date"),
       away: document.getElementById("away"),
       awayText: document.getElementById("awayText"),
+      worldClocks: document.getElementById("worldClocks"),
       controls: document.getElementById("controls"),
       fullscreenButton: document.getElementById("fullscreenButton"),
       brightness: document.getElementById("brightness"),
@@ -539,6 +957,7 @@
       secondsButton: document.getElementById("secondsButton"),
       dateButton: document.getElementById("dateButton"),
       awayButton: document.getElementById("awayButton"),
+      worldButton: document.getElementById("worldButton"),
       audioButton: document.getElementById("audioButton"),
       soundSelect: document.getElementById("soundSelect"),
       volume: document.getElementById("volume"),
@@ -577,8 +996,10 @@
       elements.secondsButton.setAttribute("aria-pressed", String(state.showSeconds));
       elements.dateButton.setAttribute("aria-pressed", String(state.showDate));
       elements.awayButton.setAttribute("aria-pressed", String(state.showAway));
+      elements.worldButton.setAttribute("aria-pressed", String(state.showWorld));
       elements.date.hidden = !state.showDate;
       elements.away.hidden = !state.showAway;
+      elements.worldClocks.hidden = !state.showWorld;
       elements.awayText.textContent = state.message || defaults.message;
       elements.messageInput.value = state.message;
       elements.soundSelect.value = state.sound;
@@ -589,6 +1010,7 @@
       });
 
       renderTime();
+      renderWorldClocks();
     }
 
     function renderTime() {
@@ -622,6 +1044,35 @@
         month: "long",
         day: "numeric"
       });
+
+      renderWorldClocks(now);
+    }
+
+    function renderWorldClocks(now = new Date()) {
+      elements.worldClocks.innerHTML = friendClocks.map((clock) => {
+        const time = new Intl.DateTimeFormat(undefined, {
+          timeZone: clock.zone,
+          hour: "numeric",
+          minute: "2-digit",
+          hour12: !state.use24h
+        }).format(now);
+
+        const date = new Intl.DateTimeFormat(undefined, {
+          timeZone: clock.zone,
+          weekday: "short",
+          month: "short",
+          day: "numeric",
+          timeZoneName: "short"
+        }).format(now);
+
+        return `
+          <article class="zone-clock">
+            <div class="zone-label">${clock.label}</div>
+            <div class="zone-time">${time}</div>
+            <div class="zone-date">${date}</div>
+          </article>
+        `;
+      }).join("");
     }
 
     function resizeCanvas() {
@@ -978,6 +1429,12 @@
 
     elements.awayButton.addEventListener("click", () => {
       state.showAway = !state.showAway;
+      saveSettings();
+      applySettings();
+    });
+
+    elements.worldButton.addEventListener("click", () => {
+      state.showWorld = !state.showWorld;
       saveSettings();
       applySettings();
     });
